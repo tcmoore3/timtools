@@ -6,6 +6,7 @@ Handles the primary functions
 """
 import freud
 import gsd.hoomd
+import numpy as np
 
 
 TTDEFAULTS = {
@@ -79,3 +80,30 @@ def get_N_particles(filename, frame=0):
     with gsd.open(filename, 'rb') as traj:
         N = traj[frame].particles.N
     return N
+
+def get_largest_rcut(box):
+    """Get the largest possible rcut for a given box
+
+    This function simply finds the distances between each set of planes
+    that define the simulation box, and returns the minimum of their halves.
+    It is probably a good idea to set the r_cut value to something smaller
+    than the value this function returns, like 0.95*get_largest_rcut(box).
+
+    Args
+    ----
+    box : freud.box.Box
+        The simulation box
+
+    Returns
+    -------
+    max_rcut : float
+        Half of the minimum plane-plane distance of the box faces
+
+    """
+    dist_x = box.Lx / np.sqrt(1.0 + box.xy**2 + (box.xy * box.yz - box.xz)**2)
+    dist_y = box.Ly / np.sqrt(1.0 + box.yz**2)
+    dist_z = box.Lz
+    if box.is2D:
+        return min(dist_x / 2, dist_y / 2)
+    else:
+        return min(dist_x/2, dist_y/2, dist_z/2)
