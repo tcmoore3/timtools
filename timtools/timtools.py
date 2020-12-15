@@ -77,7 +77,7 @@ def get_N_particles(filename, frame=0):
         The number of particles in the specified frame
 
     """
-    with gsd.open(filename, 'rb') as traj:
+    with gsd.hoomd.open(filename, 'rb') as traj:
         N = traj[frame].particles.N
     return N
 
