@@ -60,7 +60,7 @@ def get_gsd_configurations(
     traj_slice = slice(start_frame, end_frame, frame_skip)
     with gsd.hoomd.open(filename, 'rb') as traj:
         for frame in traj[traj_slice]:
-            yield _get_configuration(frame)
+            yield _get_configuration(frame, is2D=is2D)
 
 def get_N_particles(filename, frame=0):
     """Get the number of particles in a specific frame of a trajectory
