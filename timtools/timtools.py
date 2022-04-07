@@ -10,8 +10,8 @@ import numpy as np
 
 
 TTDEFAULTS = {
-        'is2D': True,
-        }
+    'is2D': True,
+}
 
 
 def _get_configuration(frame, is2D=TTDEFAULTS['is2D']):
